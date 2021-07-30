@@ -1,0 +1,5 @@
+rootProject.name = 'CTV_Autotests'
+include 'protocol'
+include 'protocol.roku'
+include 'roku'
+
