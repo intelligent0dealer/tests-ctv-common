@@ -16,6 +16,11 @@ public class AndroidTvProtocolImpl implements IPlatformProtocol {
     }*/
 
     @Override
+    public void closeSession() {
+
+    }
+
+    @Override
     public void pressButton(Button button) {
 
     }

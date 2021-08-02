@@ -4,6 +4,8 @@ import exception.NoSuchElementException;
 import exception.SessionNotCreatedException;
 import exception.WebDriverException;
 import models.*;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -11,6 +13,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
 
+import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 import static webdriver.Utils.parseError;
 
 public class RokuDriver {
@@ -76,7 +79,11 @@ public class RokuDriver {
     }
 
     private Retrofit buildRetrofit(String driverURL) {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(BODY);
+        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
         return new Retrofit.Builder()
+                .client(client)
                 .baseUrl(driverURL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

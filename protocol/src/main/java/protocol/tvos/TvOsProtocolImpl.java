@@ -8,6 +8,11 @@ import protocol.Selector;
 public class TvOsProtocolImpl implements IPlatformProtocol {
 
     @Override
+    public void closeSession() {
+
+    }
+
+    @Override
     public void pressButton(Button button) {
 
     }

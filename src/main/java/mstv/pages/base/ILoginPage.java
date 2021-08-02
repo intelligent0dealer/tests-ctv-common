@@ -1,15 +1,15 @@
 package mstv.pages.base;
 
-import mstv.pages.roku.RokuEpisodePageImpl;
+import mstv.pages.roku.RokuLoginPageImpl;
 import protocol.Configuration;
 import protocol.IPlatformProtocol;
 
-public interface IEpisodePage {
+public interface ILoginPage {
 
-    static IEpisodePage createEpisodePage(Configuration configuration, IPlatformProtocol protocol) {
+    static ILoginPage createLoginPage(Configuration configuration, IPlatformProtocol protocol) {
         switch (configuration.getPlatform()) {
             case ROKU: {
-                return new RokuEpisodePageImpl(configuration, protocol);
+                return new RokuLoginPageImpl(configuration, protocol);
             }
             default:
                 throw new IllegalArgumentException();

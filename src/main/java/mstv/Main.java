@@ -1,6 +1,5 @@
 package mstv;
 
-import mstv.pages.base.IEpisodePage;
 import mstv.pages.base.IHomePage;
 import protocol.Configuration;
 import protocol.Configuration.Builder;
@@ -20,7 +19,7 @@ public class Main {
                 .build();
         IPlatformProtocol protocol = ProtocolFactory.createProtocol(configuration);
         IHomePage homePage = createHomePage(configuration, protocol);
-        IEpisodePage episodePage = homePage.openEpisodePage();
-        episodePage.playVideo();
+        homePage.openLoginPage();
+        protocol.closeSession();
     }
 }

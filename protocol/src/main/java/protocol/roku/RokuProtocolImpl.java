@@ -2,7 +2,6 @@ package protocol.roku;
 
 import models.Element;
 import models.RokuButton;
-import models.Sequence;
 import protocol.*;
 import webdriver.RokuDriver;
 
@@ -10,6 +9,7 @@ import static models.Selector.Builder;
 import static models.Selector.Data;
 import static models.Selector.LocatorStrategy.Tag;
 import static models.Selector.LocatorStrategy.Text;
+import static models.Sequence.createSequence;
 
 public class RokuProtocolImpl implements IPlatformProtocol {
 
@@ -20,13 +20,18 @@ public class RokuProtocolImpl implements IPlatformProtocol {
     }
 
     @Override
+    public void closeSession() {
+        driver.closeSession();
+    }
+
+    @Override
     public void pressButton(Button button) {
-        driver.pressKeySequence(Sequence.createSequence(toRokuButton(button)));
+        driver.pressKeySequence(createSequence(toRokuButton(button)));
     }
 
     @Override
     public void sendKeys(String text) {
-        driver.pressKeySequence(Sequence.createSequence(text));
+        driver.pressKeySequence(createSequence(text));
     }
 
     @Override
