@@ -12,6 +12,10 @@ dependencies {
     testImplementation("com.google.inject:guice:5.0.1")
 }
 
-test {
+tasks.test {
+    systemProperty("ctv.platform", getEnvironment().get("CTV_PLATFORM", "ROKU"))
+    systemProperty("ctv.baseUrl", getEnvironment().get("CTV_BASE_URL", "http://localhost:9000"))
+    systemProperty("ctv.clientIpAddress", getEnvironment().get("CTV_CLIENT_IP_ADDRESS", "192.168.0.4"))
+    systemProperty("ctv.isLogEnabled", getEnvironment().get("CTV_IS_LOG_ENABLED", "true"))
     useTestNG()
 }

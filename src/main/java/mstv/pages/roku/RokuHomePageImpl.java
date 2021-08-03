@@ -31,6 +31,7 @@ public class RokuHomePageImpl implements IHomePage {
     @Override
     public ILoginPage openLoginPage() {
         PlatformElement element = protocol.findElement(text(SIGN_IN_TEXT));
+
         return createLoginPage(configuration, protocol);
     }
 }

@@ -16,7 +16,11 @@ public class RokuProtocolImpl implements IPlatformProtocol {
     private final RokuDriver driver;
 
     public RokuProtocolImpl(Configuration configuration) {
-        driver = new RokuDriver(configuration.getDriverUrl(), configuration.getClientIpAddress());
+        driver = new RokuDriver(
+                configuration.getDriverUrl(),
+                configuration.getClientIpAddress(),
+                configuration.isLogEnabled()
+        );
     }
 
     @Override

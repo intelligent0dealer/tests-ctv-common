@@ -5,6 +5,7 @@ public class Configuration {
     private String clientIpAddress;
     private String driverUrl;
     private Platform platform;
+    private boolean isLogEnabled;
 
     private Configuration() {
     }
@@ -19,6 +20,10 @@ public class Configuration {
 
     public Platform getPlatform() {
         return platform;
+    }
+
+    public boolean isLogEnabled() {
+        return isLogEnabled;
     }
 
     public static class Builder {
@@ -36,6 +41,11 @@ public class Configuration {
 
         public Builder driverUrl(String driverUrl) {
             configuration.driverUrl = driverUrl;
+            return this;
+        }
+
+        public Builder log(boolean isLogEnabled) {
+            configuration.isLogEnabled = isLogEnabled;
             return this;
         }
 

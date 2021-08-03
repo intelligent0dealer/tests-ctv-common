@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.IOException;
 
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
+import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
 import static webdriver.Utils.parseError;
 
 public class RokuDriver {
@@ -22,8 +23,8 @@ public class RokuDriver {
     private final WebDriver driver;
     private final String sessionId;
 
-    public RokuDriver(String driverURL, String clientIpAddress) {
-        retrofit = buildRetrofit(driverURL);
+    public RokuDriver(String driverURL, String clientIpAddress, boolean isLogEnabled) {
+        retrofit = buildRetrofit(driverURL, isLogEnabled);
         driver = retrofit.create(WebDriver.class);
         try {
             RokuResult<Session> result = execute(driver.createSession(new IpAddress(clientIpAddress)),
@@ -78,9 +79,10 @@ public class RokuDriver {
         execute(driver.timeouts(sessionId, timeout), "Unable to configure timeout");
     }
 
-    private Retrofit buildRetrofit(String driverURL) {
+    private Retrofit buildRetrofit(String driverURL, boolean isLogEnabled) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(BODY);
+        HttpLoggingInterceptor.Level level = isLogEnabled ? BODY : NONE;
+        interceptor.setLevel(level);
         OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
         return new Retrofit.Builder()
                 .client(client)
