@@ -6,7 +6,7 @@ import protocol.IPlatformProtocol;
 
 public interface IHomePage {
 
-    static IHomePage createHomePage(Configuration configuration, IPlatformProtocol protocol) {
+    static IHomePage openHomePage(Configuration configuration, IPlatformProtocol protocol) {
         switch (configuration.getPlatform()) {
             case ROKU: {
                 return new RokuHomePageImpl(configuration, protocol);

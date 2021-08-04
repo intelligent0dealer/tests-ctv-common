@@ -6,7 +6,7 @@ import protocol.IPlatformProtocol;
 
 public interface ILoginPage {
 
-    static ILoginPage createLoginPage(Configuration configuration, IPlatformProtocol protocol) {
+    static ILoginPage openLoginPage(Configuration configuration, IPlatformProtocol protocol) {
         switch (configuration.getPlatform()) {
             case ROKU: {
                 return new RokuLoginPageImpl(configuration, protocol);

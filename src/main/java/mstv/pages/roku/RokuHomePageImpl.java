@@ -7,8 +7,6 @@ import protocol.Configuration;
 import protocol.IPlatformProtocol;
 import protocol.PlatformElement;
 
-import static mstv.pages.base.IEpisodePage.createEpisodePage;
-import static mstv.pages.base.ILoginPage.createLoginPage;
 import static protocol.By.text;
 
 public class RokuHomePageImpl implements IHomePage {
@@ -25,13 +23,18 @@ public class RokuHomePageImpl implements IHomePage {
     @Override
     public IEpisodePage openEpisodePage() {
         //do something here
-        return createEpisodePage(configuration, protocol);
+        return IEpisodePage.openEpisodePage(configuration, protocol);
     }
 
     @Override
     public ILoginPage openLoginPage() {
+        //1. найти кнопку SIGN IN
         PlatformElement element = protocol.findElement(text(SIGN_IN_TEXT));
-
-        return createLoginPage(configuration, protocol);
+        //2. получить текущий активный элемент
+        PlatformElement activeElement = protocol.getActiveElement();
+        //3. произвести переход на кнопку SIGN IN в зависимости от текущей позиции
+        //4. нажать на кнопку SING IN
+        //protocol.pressButton(Button.OK);
+        return ILoginPage.openLoginPage(configuration, protocol);
     }
 }

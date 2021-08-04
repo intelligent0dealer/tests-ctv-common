@@ -7,7 +7,7 @@ import protocol.IPlatformProtocol;
 import protocol.Platform;
 import protocol.ProtocolFactory;
 
-import static mstv.pages.base.IHomePage.createHomePage;
+import static mstv.pages.base.IHomePage.openHomePage;
 
 public class Main {
 
@@ -16,9 +16,10 @@ public class Main {
                 .platform(Platform.ROKU)
                 .driverUrl("http://localhost:9000")
                 .clientIpAddress("192.168.0.4")
+                .log(true)
                 .build();
         IPlatformProtocol protocol = ProtocolFactory.createProtocol(configuration);
-        IHomePage homePage = createHomePage(configuration, protocol);
+        IHomePage homePage = openHomePage(configuration, protocol);
         homePage.openLoginPage();
         protocol.closeSession();
     }

@@ -1,44 +1,45 @@
 package models;
 
-import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-    @Generated("jsonschema2pojo")
-    public class Timeout {
+import javax.annotation.Generated;
 
-        @SerializedName("type")
-        @Expose
-        private TimeoutType type;
-        @SerializedName("value")
-        @Expose
-        private Integer value;
+@Generated("jsonschema2pojo")
+public class Timeout {
 
-        public Timeout(TimeoutType type, Integer value) {
-            this.type = type;
-            this.value = value;
-        }
+    @SerializedName("type")
+    @Expose
+    private TimeoutType type;
+    @SerializedName("value")
+    @Expose
+    private Long value;
 
-        public TimeoutType getType() {
-            return type;
-        }
-
-        public void setType(TimeoutType type) {
-            this.type = type;
-        }
-
-        public Integer getValue() {
-            return value;
-        }
-
-        public void setValue(Integer value) {
-            this.value = value;
-        }
-        public static enum TimeoutType {
-            @SerializedName("implicit")
-            IMPLICIT,
-            @SerializedName("pressDelay")
-            PRESS_DELAY
-        }
-
+    public Timeout(TimeoutType type, Long value) {
+        this.type = type;
+        this.value = value;
     }
+
+    public TimeoutType getType() {
+        return type;
+    }
+
+    public void setType(TimeoutType type) {
+        this.type = type;
+    }
+
+    public Long getValue() {
+        return value;
+    }
+
+    public void setValue(Long value) {
+        this.value = value;
+    }
+
+    public static enum TimeoutType {
+        @SerializedName("implicit")
+        IMPLICIT,
+        @SerializedName("pressDelay")
+        PRESS_DELAY
+    }
+}

@@ -6,7 +6,7 @@ import protocol.IPlatformProtocol;
 
 public interface IEpisodePage {
 
-    static IEpisodePage createEpisodePage(Configuration configuration, IPlatformProtocol protocol) {
+    static IEpisodePage openEpisodePage(Configuration configuration, IPlatformProtocol protocol) {
         switch (configuration.getPlatform()) {
             case ROKU: {
                 return new RokuEpisodePageImpl(configuration, protocol);
