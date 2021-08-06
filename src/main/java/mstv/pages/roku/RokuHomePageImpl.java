@@ -6,7 +6,9 @@ import mstv.pages.base.ILoginPage;
 import protocol.Configuration;
 import protocol.IPlatformProtocol;
 import protocol.PlatformElement;
+import protocol.Selector;
 
+import static protocol.By.attr;
 import static protocol.By.text;
 
 public class RokuHomePageImpl implements IHomePage {
@@ -31,7 +33,8 @@ public class RokuHomePageImpl implements IHomePage {
         //1. найти кнопку SIGN IN
         PlatformElement element = protocol.findElement(text(SIGN_IN_TEXT));
         //2. получить текущий активный элемент
-        PlatformElement activeElement = protocol.getActiveElement();
+        Selector parent = attr("name", "home_screen").addAttribute("extends", "MsTvGroup");
+        PlatformElement activeElement = protocol.findElement(attr("focused", "true").setParent(parent));
         //3. произвести переход на кнопку SIGN IN в зависимости от текущей позиции
         //4. нажать на кнопку SING IN
         //protocol.pressButton(Button.OK);

@@ -2,14 +2,17 @@ package models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static models.Selector.LocatorStrategy.*;
+
 public class Selector {
 
-    private List<Data> elementData = null;
-    private List<Data> parentData = null;
+    private final ArrayList<Data> elementData = new ArrayList<>();
+    private final ArrayList<Data> parentData = new ArrayList<>();
 
     private Selector() {
     }
@@ -35,7 +38,7 @@ public class Selector {
         Text(),
         @SerializedName("tag")
         Tag(),
-        @SerializedName("attribute")
+        @SerializedName("attr")
         Attr()
     }
 
@@ -47,13 +50,13 @@ public class Selector {
             example = new Selector();
         }
 
-        public Builder addElementData(Data... datas) {
-            example.elementData = Stream.of(datas).collect(Collectors.toList());
+        public Builder addElementData(Data... data) {
+            example.elementData.addAll(Stream.of(data).collect(Collectors.toList()));
             return this;
         }
 
-        public Builder addParentData(Data... datas) {
-            example.parentData = Stream.of(datas).collect(Collectors.toList());
+        public Builder addParentData(Data... data) {
+            example.parentData.addAll(Stream.of(data).collect(Collectors.toList()));
             return this;
         }
 
@@ -66,9 +69,43 @@ public class Selector {
 
         private LocatorStrategy using;
         private String value;
+        private String attribute;
 
-        public Data(LocatorStrategy using, String value) {
-            this.using = using;
+        public static Data text(String text) {
+            Data data = new Data();
+            data.setUsing(Text);
+            data.setValue(text);
+            return data;
+        }
+
+        public static Data attr(String attribute, String value) {
+            Data data = new Data();
+            data.setUsing(Attr);
+            data.setAttribute(attribute);
+            data.setValue(value);
+            return data;
+        }
+
+        public static Data tag(String tag) {
+            Data data = new Data();
+            data.setUsing(Tag);
+            data.setValue(tag);
+            return data;
+        }
+
+        public String getAttribute() {
+            return attribute;
+        }
+
+        public void setAttribute(String attribute) {
+            this.attribute = attribute;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
             this.value = value;
         }
 
@@ -80,19 +117,12 @@ public class Selector {
             this.using = using;
         }
 
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
-
         @Override
         public String toString() {
             return "Data{" +
                     "using=" + using +
                     ", value='" + value + '\'' +
+                    ", attribute='" + attribute + '\'' +
                     '}';
         }
     }

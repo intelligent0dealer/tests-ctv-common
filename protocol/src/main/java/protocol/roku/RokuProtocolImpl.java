@@ -6,9 +6,7 @@ import protocol.*;
 import webdriver.RokuDriver;
 
 import static models.Selector.Builder;
-import static models.Selector.Data;
-import static models.Selector.LocatorStrategy.Tag;
-import static models.Selector.LocatorStrategy.Text;
+import static models.Selector.Data.*;
 import static models.Sequence.createSequence;
 
 public class RokuProtocolImpl implements IPlatformProtocol {
@@ -66,10 +64,24 @@ public class RokuProtocolImpl implements IPlatformProtocol {
     public models.Selector toRokuSelector(Selector selector) {
         Builder builder = new Builder();
         if (selector.getText() != null && !selector.getText().isEmpty()) {
-            builder.addElementData(new Data(Text, selector.getText()));
+            builder.addElementData(text(selector.getText()));
         }
         if (selector.getTag() != null && !selector.getTag().isEmpty()) {
-            builder.addElementData(new Data(Tag, selector.getTag()));
+            builder.addElementData(tag(selector.getTag()));
+        }
+        if (selector.getAttributes().size() > 0) {
+            selector.getAttributes().forEach((name, value) -> builder.addElementData(attr(name, value)));
+        }
+        if (selector.getParent() != null) {
+            if (selector.getParent().getText() != null && !selector.getParent().getText().isEmpty()) {
+                builder.addParentData(text(selector.getParent().getText()));
+            }
+            if (selector.getParent().getTag() != null && !selector.getParent().getTag().isEmpty()) {
+                builder.addParentData(text(selector.getParent().getTag()));
+            }
+            if (selector.getParent().getAttributes().size() > 0) {
+                selector.getParent().getAttributes().forEach((name, value) -> builder.addParentData(attr(name, value)));
+            }
         }
         return builder.build();
     }
