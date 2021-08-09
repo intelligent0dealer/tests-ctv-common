@@ -30,6 +30,7 @@ public class Main {
             driver = new RokuDriver(
                     configuration.getDriverUrl(),
                     configuration.getClientIpAddress(),
+                    1000L,
                     configuration.isLogEnabled()
             );
 

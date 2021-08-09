@@ -12,7 +12,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
 import static webdriver.Utils.parseError;
@@ -22,11 +27,17 @@ public class RokuDriver {
     private final Retrofit retrofit;
     private final WebDriver driver;
     private final String sessionId;
+    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private final long delay;
 
-    public RokuDriver(String driverURL, String clientIpAddress, boolean isLogEnabled) {
+    public RokuDriver(String driverURL, String clientIpAddress, long delay, boolean isLogEnabled) {
         retrofit = buildRetrofit(driverURL, isLogEnabled);
         driver = retrofit.create(WebDriver.class);
+        this.delay = delay;
         try {
+            if (clientIpAddress == null || clientIpAddress.isEmpty()) {
+                throw new IllegalArgumentException("The client's IP address must not be null or empty.");
+            }
             RokuResult<Session> result = execute(driver.createSession(new IpAddress(clientIpAddress)),
                     String.format("Unable to create new session using next url: %s", driverURL));
             if (result != null && result.getSessionId() != null && !result.getSessionId().isEmpty()) {
@@ -80,6 +91,9 @@ public class RokuDriver {
     }
 
     private Retrofit buildRetrofit(String driverURL, boolean isLogEnabled) {
+        if (driverURL == null || driverURL.isEmpty()) {
+            throw new IllegalArgumentException("The driver URL must not be null or empty");
+        }
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         HttpLoggingInterceptor.Level level = isLogEnabled ? BODY : NONE;
         interceptor.setLevel(level);
@@ -93,7 +107,8 @@ public class RokuDriver {
 
     private <R> RokuResult<R> execute(Call<RokuResult<R>> call, String defaultErrorMessage) {
         try {
-            Response<RokuResult<R>> response = call.execute();
+            ScheduledFuture<Response<RokuResult<R>>> future = executorService.schedule(call::execute, delay, MILLISECONDS);
+            Response<RokuResult<R>> response = future.get();
             if (response.isSuccessful()) {
                 return response.body();
             } else {
@@ -104,7 +119,7 @@ public class RokuDriver {
                     throw new WebDriverException(defaultErrorMessage);
                 }
             }
-        } catch (IOException exception) {
+        } catch (IOException | ExecutionException | InterruptedException exception) {
             throw new WebDriverException(exception);
         }
     }

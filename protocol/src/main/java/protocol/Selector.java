@@ -10,7 +10,7 @@ public class Selector {
     private String text;
     private String tag;
 
-    private Selector() {
+    Selector() {
 
     }
 

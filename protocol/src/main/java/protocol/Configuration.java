@@ -2,7 +2,10 @@ package protocol;
 
 public class Configuration {
 
+    private static final long DEFAULT_DELAY = 1000L;
+
     private String clientIpAddress;
+    private long delay = DEFAULT_DELAY;
     private String driverUrl;
     private Platform platform;
     private boolean isLogEnabled;
@@ -12,6 +15,10 @@ public class Configuration {
 
     public String getClientIpAddress() {
         return clientIpAddress;
+    }
+
+    public long getDelay() {
+        return delay;
     }
 
     public String getDriverUrl() {
@@ -36,6 +43,11 @@ public class Configuration {
 
         public Builder clientIpAddress(String ipAddress) {
             configuration.clientIpAddress = ipAddress;
+            return this;
+        }
+
+        public Builder delay(long delay) {
+            configuration.delay = delay;
             return this;
         }
 
