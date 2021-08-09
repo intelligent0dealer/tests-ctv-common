@@ -5,7 +5,7 @@ public enum RokuButton {
     DOWN("down"),
     RIGHT("right"),
     LEFT("left"),
-    OK("enter"),
+    OK("select"),
     BACK("back"),
     REFRESH("instantReplay");
 

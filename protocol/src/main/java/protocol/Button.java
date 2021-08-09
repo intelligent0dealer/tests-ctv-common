@@ -1,5 +1,11 @@
 package protocol;
 
 public enum Button {
-    UP
+    UP,
+    RIGHT,
+    OK,
+    DOWN,
+    LEFT,
+    BACK,
+    REFRESH
 }

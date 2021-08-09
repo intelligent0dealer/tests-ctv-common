@@ -21,7 +21,7 @@ public class AndroidTvProtocolImpl implements IPlatformProtocol {
     }
 
     @Override
-    public void pressButton(Button button) {
+    public void pressButton(Button... button) {
 
     }
 

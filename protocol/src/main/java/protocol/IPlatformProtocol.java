@@ -4,7 +4,7 @@ public interface IPlatformProtocol {
 
     void closeSession();
 
-    void pressButton(Button button);
+    void pressButton(Button... button);
 
     void sendKeys(String text);
 

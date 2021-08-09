@@ -50,11 +50,11 @@ public class Main {
             List<Element.Attr> attributes = new ArrayList<>();
             Utils.readAttributes(Collections.singletonList(element), attributes);
 
-            Optional<String> optional = element.getAttrs().stream()
-                    .filter(Main::filterAttr)
+            String name = attributes.stream()
+                    .filter(attr -> Utils.filterAttr(attr,"name"))
                     .map(Element.Attr::getValue)
-                    .findFirst();
-            String name = optional.orElseGet(() -> optional.orElse(""));
+                    .findFirst()
+                    .orElse("");
 
             System.out.println("!!! " + name);
         } catch (Exception exception) {
@@ -64,13 +64,6 @@ public class Main {
                 driver.closeSession();
             }
         }
-    }
-
-    static boolean filterAttr(Element.Attr attr) {
-        if (attr.getName() != null && attr.getName().getLocal() != null) {
-            return attr.getName().getLocal().equals("name");
-        }
-        return false;
     }
 }
 
