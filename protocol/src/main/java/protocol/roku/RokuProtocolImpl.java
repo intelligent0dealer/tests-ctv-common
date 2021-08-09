@@ -74,7 +74,6 @@ public class RokuProtocolImpl implements IPlatformProtocol {
 
     private PlatformElement toPlatformElement(Element element) {
         PlatformElement platformElement = new PlatformElement();
-
         Stream<Element.Attr> stream = element.getAttrs().stream();
         String name = stream.filter(attr -> Utils.filterAttr(attr, "name"))
                 .map(Element.Attr::getValue)
