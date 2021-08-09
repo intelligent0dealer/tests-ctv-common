@@ -2,10 +2,8 @@ package protocol;
 
 public class Configuration {
 
-    private static final long DEFAULT_DELAY = 1000L;
-
     private String clientIpAddress;
-    private long delay = DEFAULT_DELAY;
+    private long delay;
     private String driverUrl;
     private Platform platform;
     private boolean isLogEnabled;

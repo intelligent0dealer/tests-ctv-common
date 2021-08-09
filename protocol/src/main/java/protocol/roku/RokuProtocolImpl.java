@@ -2,11 +2,11 @@ package protocol.roku;
 
 import models.Element;
 import models.RokuButton;
-import models.Timeout;
 import protocol.*;
 import webdriver.RokuDriver;
 import webdriver.Utils;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static models.Selector.Builder;
@@ -51,6 +51,27 @@ public class RokuProtocolImpl implements IPlatformProtocol {
         return toPlatformElement(driver.findElement(toRokuSelector(selector)));
     }
 
+    private RokuButton mapButton(Button button) {
+        switch (button) {
+            case UP:
+                return RokuButton.UP;
+            case RIGHT:
+                return RokuButton.RIGHT;
+            case OK:
+                return RokuButton.OK;
+            case DOWN:
+                return RokuButton.DOWN;
+            case LEFT:
+                return RokuButton.LEFT;
+            case BACK:
+                return RokuButton.BACK;
+            case REFRESH:
+                return RokuButton.REFRESH;
+            default:
+                throw new IllegalArgumentException("Unknown button");
+        }
+    }
+
     private PlatformElement toPlatformElement(Element element) {
         PlatformElement platformElement = new PlatformElement();
 
@@ -64,29 +85,7 @@ public class RokuProtocolImpl implements IPlatformProtocol {
     }
 
     private RokuButton[] toRokuButton(Button... button) {
-        RokuButton[] rokuButtons = new RokuButton[button.length];
-        for (int i = 0; i < button.length; i++) {
-            Button tempButton = button[i];
-            switch (tempButton) {
-                case UP:
-                    rokuButtons[i] = RokuButton.UP;
-                case RIGHT:
-                    rokuButtons[i] = RokuButton.RIGHT;
-                case OK:
-                    rokuButtons[i] = RokuButton.OK;
-                case DOWN:
-                    rokuButtons[i] = RokuButton.DOWN;
-                case LEFT:
-                    rokuButtons[i] = RokuButton.LEFT;
-                case BACK:
-                    rokuButtons[i] = RokuButton.BACK;
-                case REFRESH:
-                    rokuButtons[i] = RokuButton.REFRESH;
-                default:
-                    throw new IllegalArgumentException("Unknown button");
-            }
-        }
-        return rokuButtons;
+        return Arrays.stream(button).map(this::mapButton).toArray(RokuButton[]::new);
     }
 
     public models.Selector toRokuSelector(Selector selector) {

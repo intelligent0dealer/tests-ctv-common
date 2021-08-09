@@ -30,7 +30,7 @@ public class RokuHomePageImpl implements IHomePage {
         //1. найти кнопку SIGN IN
         PlatformElement element = protocol.findElement(text(SIGN_IN_TEXT));
         //2. получить текущий активный элемент
-        Selector parent = attr("name", "home_screen").addAttribute("extends", "MsTvGroup");
+        Selector parent = attr("name", "home_screen").addAttribute("extends", "Group");
         Selector selector = attr("focused", "true").setParent(parent);
         PlatformElement activeElement = protocol.findElement(selector);
         //3. произвести переход на кнопку SIGN IN в зависимости от текущей позиции
