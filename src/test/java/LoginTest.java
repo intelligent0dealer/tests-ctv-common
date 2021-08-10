@@ -8,6 +8,6 @@ public class LoginTest extends AbstractTest {
     @Test
     void test() {
         IHomePage homePage = openHomePage(getConfiguration(), getProtocol());
-        homePage.openLoginPage();
+        homePage.openLoginPage().typeEmail("login").typePassword("password").submit();
     }
 }

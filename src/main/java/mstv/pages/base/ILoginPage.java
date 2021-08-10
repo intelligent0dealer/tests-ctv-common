@@ -15,4 +15,10 @@ public interface ILoginPage {
                 throw new IllegalArgumentException();
         }
     }
+
+    ILoginPage typeEmail(String email);
+
+    ILoginPage typePassword(String password);
+
+    void submit();
 }

@@ -105,11 +105,11 @@ public class RokuProtocolImpl implements IPlatformProtocol {
             if (selector.getParent().getText() != null && !selector.getParent().getText().isEmpty()) {
                 builder.addParentData(text(selector.getParent().getText()));
             }
-            if (selector.getParent().getTag() != null && !selector.getParent().getTag().isEmpty()) {
-                builder.addParentData(text(selector.getParent().getTag()));
-            }
             if (selector.getParent().getAttributes().size() > 0) {
                 selector.getParent().getAttributes().forEach((name, value) -> builder.addParentData(attr(name, value)));
+            }
+            if (selector.getParent().getTag() != null && !selector.getParent().getTag().isEmpty()) {
+                builder.addParentData(tag(selector.getParent().getTag()));
             }
         }
         return builder.build();
