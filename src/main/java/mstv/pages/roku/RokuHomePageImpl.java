@@ -3,11 +3,11 @@ package mstv.pages.roku;
 import mstv.pages.base.IEpisodePage;
 import mstv.pages.base.IHomePage;
 import mstv.pages.base.ILoginPage;
-import protocol.Button;
 import protocol.Configuration;
 import protocol.IPlatformProtocol;
 import protocol.Selector;
 
+import static protocol.Button.*;
 import static protocol.By.attr;
 
 public class RokuHomePageImpl implements IHomePage {
@@ -35,15 +35,15 @@ public class RokuHomePageImpl implements IHomePage {
         String activeElementID = protocol.findElement(selector).getId();
         if (activeElementID.equals(CAROUSEL_ID)) {
             do {
-                protocol.pressButton(Button.UP);
+                protocol.pressButton(UP);
                 activeElementID = protocol.findElement(selector).getId();
             }
             while (activeElementID.equals(CAROUSEL_ID));
         }
-        if (activeElementID.equals("join")) {
-            protocol.pressButton(Button.RIGHT);
+        if (activeElementID.equals(JOIN_NOW_BUTTON_ID)) {
+            protocol.pressButton(RIGHT);
         }
-        protocol.pressButton(Button.OK);
+        protocol.pressButton(OK);
         return ILoginPage.openLoginPage(configuration, protocol);
     }
 }

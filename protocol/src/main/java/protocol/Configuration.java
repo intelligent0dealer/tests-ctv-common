@@ -2,10 +2,11 @@ package protocol;
 
 public class Configuration {
 
-    private String clientIpAddress;
-    private long delay;
     private String driverUrl;
+    private String clientIpAddress;
     private Platform platform;
+    private long timeout;
+    private long delay;
     private boolean isLogEnabled;
 
     private Configuration() {
@@ -25,6 +26,10 @@ public class Configuration {
 
     public Platform getPlatform() {
         return platform;
+    }
+
+    public long getTimeout() {
+        return timeout;
     }
 
     public boolean isLogEnabled() {
@@ -61,6 +66,11 @@ public class Configuration {
 
         public Builder platform(Platform platform) {
             configuration.platform = platform;
+            return this;
+        }
+
+        public Builder timeout(long timeout) {
+            configuration.timeout = timeout;
             return this;
         }
 

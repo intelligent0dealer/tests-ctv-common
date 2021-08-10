@@ -2,6 +2,7 @@ package webdriver;
 
 import exception.NoSuchElementException;
 import exception.SessionNotCreatedException;
+import exception.TimeoutException;
 import exception.WebDriverException;
 import models.*;
 import okhttp3.OkHttpClient;
@@ -17,6 +18,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 
+import static java.lang.System.currentTimeMillis;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.BODY;
 import static okhttp3.logging.HttpLoggingInterceptor.Level.NONE;
@@ -27,18 +29,21 @@ public class RokuDriver {
     private final Retrofit retrofit;
     private final WebDriver driver;
     private final String sessionId;
-    private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private final ScheduledExecutorService executorService;
+    private final long timeout;
     private final long delay;
 
-    public RokuDriver(String driverURL, String clientIpAddress, long delay, boolean isLogEnabled) {
+    public RokuDriver(String driverURL, String clientIpAddress, long timeout, long delay, boolean isLogEnabled) {
         retrofit = buildRetrofit(driverURL, isLogEnabled);
         driver = retrofit.create(WebDriver.class);
+        this.timeout = timeout;
         this.delay = delay;
+        executorService = Executors.newSingleThreadScheduledExecutor();
         try {
             if (clientIpAddress == null || clientIpAddress.isEmpty()) {
                 throw new IllegalArgumentException("The client's IP address must not be null or empty.");
             }
-            RokuResult<Session> result = execute(driver.createSession(new IpAddress(clientIpAddress)),
+            RokuResult<Session> result = delayedExecute(driver.createSession(new IpAddress(clientIpAddress)),
                     String.format("Unable to create new session using next url: %s", driverURL));
             if (result != null && result.getSessionId() != null && !result.getSessionId().isEmpty()) {
                 sessionId = result.getSessionId();
@@ -51,7 +56,8 @@ public class RokuDriver {
     }
 
     public void closeSession() {
-        execute(driver.deleteSession(sessionId), String.format("Unable to close session with ID: %s", sessionId));
+        delayedExecute(driver.deleteSession(sessionId), String.format("Unable to close session with ID: %s", sessionId));
+        executorService.shutdown();
     }
 
     public Element findElement(Selector selector) {
@@ -67,27 +73,27 @@ public class RokuDriver {
 
     public Element getActiveElement() {
         try {
-            return execute(driver.getActiveElement(sessionId), "Unable to locate active element").getValue();
+            return delayedExecute(driver.getActiveElement(sessionId), "Unable to locate active element").getValue();
         } catch (WebDriverException exception) {
             throw new NoSuchElementException(exception);
         }
     }
 
     public Player getPlayerInfo() {
-        return execute(driver.getPlayerInfo(sessionId), "Unable to get player information").getValue();
+        return delayedExecute(driver.getPlayerInfo(sessionId), "Unable to get player information").getValue();
     }
 
     public void openChannel(String channelID) {
-        execute(driver.openChannel(sessionId, new ChannelID(channelID)),
+        delayedExecute(driver.openChannel(sessionId, new ChannelID(channelID)),
                 String.format("Unable to open channel with ID %s", channelID));
     }
 
     public void pressKeySequence(Sequence sequence) {
-        execute(driver.pressKeySequence(sessionId, sequence), "Unable to simulate keypress event");
+        delayedExecute(driver.pressKeySequence(sessionId, sequence), "Unable to simulate keypress event");
     }
 
     public void timeout(Timeout timeout) {
-        execute(driver.timeouts(sessionId, timeout), "Unable to configure timeout");
+        delayedExecute(driver.timeouts(sessionId, timeout), "Unable to configure timeout");
     }
 
     private Retrofit buildRetrofit(String driverURL, boolean isLogEnabled) {
@@ -106,6 +112,28 @@ public class RokuDriver {
     }
 
     private <R> RokuResult<R> execute(Call<RokuResult<R>> call, String defaultErrorMessage) {
+        RokuResult<R> result = null;
+        WebDriverException exception = null;
+        long currentTime = currentTimeMillis();
+        long maxTime = currentTime + timeout;
+        while (result == null && maxTime > currentTime) {
+            try {
+                result = delayedExecute(call.clone(), defaultErrorMessage);
+            } catch (WebDriverException e) {
+                exception = e;
+            }
+            currentTime = currentTimeMillis();
+        }
+        if (currentTime > maxTime) {
+            throw new TimeoutException("Maximum execution time exceeded: " + timeout);
+        }
+        if (exception != null && result == null) {
+            throw exception;
+        }
+        return result;
+    }
+
+    private <R> RokuResult<R> delayedExecute(Call<RokuResult<R>> call, String defaultErrorMessage) {
         try {
             ScheduledFuture<Response<RokuResult<R>>> future = executorService.schedule(call::execute, delay, MILLISECONDS);
             Response<RokuResult<R>> response = future.get();

@@ -15,15 +15,18 @@ import static models.Sequence.createSequence;
 
 public class RokuProtocolImpl implements IPlatformProtocol {
 
+    public static final String DEFAULT_CHANNEL_ID = "dev";
     private final RokuDriver driver;
 
     public RokuProtocolImpl(Configuration configuration) {
         driver = new RokuDriver(
                 configuration.getDriverUrl(),
                 configuration.getClientIpAddress(),
+                configuration.getTimeout(),
                 configuration.getDelay(),
                 configuration.isLogEnabled()
         );
+        driver.openChannel(DEFAULT_CHANNEL_ID);
     }
 
     @Override

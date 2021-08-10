@@ -14,6 +14,7 @@ public class BasicModule extends AbstractModule {
     private final String clientIpAddress = getProperty("ctv.clientIpAddress");
     private final boolean isLogEnabled = Boolean.parseBoolean(getProperty("ctv.isLogEnabled"));
     private final int delay = Integer.parseInt(getProperty("ctv.delay"));
+    private final int timeout = Integer.parseInt(getProperty("ctv.timeout"));
 
     @Override
     public void configure() {
@@ -23,6 +24,7 @@ public class BasicModule extends AbstractModule {
                 .clientIpAddress(clientIpAddress)
                 .log(isLogEnabled)
                 .delay(delay)
+                .timeout(timeout)
                 .build();
         bind(Configuration.class).toInstance(configuration);
         bind(IPlatformProtocol.class).toInstance(createProtocol(configuration));

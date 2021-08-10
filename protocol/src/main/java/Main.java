@@ -6,12 +6,8 @@ import protocol.Platform;
 import webdriver.RokuDriver;
 import webdriver.Utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import static models.Selector.Data.attr;
+import static models.Selector.Data.tag;
 
 public class Main {
 
@@ -30,7 +26,8 @@ public class Main {
             driver = new RokuDriver(
                     configuration.getDriverUrl(),
                     configuration.getClientIpAddress(),
-                    1000L,
+                    4000L,
+                    250L,
                     configuration.isLogEnabled()
             );
 
@@ -38,20 +35,18 @@ public class Main {
             Selector.Builder builder = new Selector.Builder();
             Selector selector = builder
                     .addElementData(attr("focused", "true"))
-//                    .addElementData(tag("Label"))
-                    .addParentData(attr("name", "home_screen"))
-                    .addParentData(attr("extends", "MsTvGroup"))
-//                    .addParentData(tag("MsTvButton"))
+                    .addParentData(attr("extends", "MsTvScreen"))
+                    .addParentData(tag("MsTvButton"))
                     .build();
             Element element = driver.findElement(selector);
             System.out.println(element);
 
             //3. read 'text' attribute
-            List<Element.Attr> attributes = new ArrayList<>();
-            Utils.readAttributes(Collections.singletonList(element), attributes);
+//            List<Element.Attr> attributes = new ArrayList<>();
+//            Utils.readAttributes(Collections.singletonList(element), attributes);
 
-            String name = attributes.stream()
-                    .filter(attr -> Utils.filterAttr(attr,"name"))
+            String name = element.getAttrs().stream()
+                    .filter(attr -> Utils.filterAttr(attr, "name"))
                     .map(Element.Attr::getValue)
                     .findFirst()
                     .orElse("");
