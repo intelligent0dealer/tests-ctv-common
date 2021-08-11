@@ -23,7 +23,7 @@ public class Sequence {
     }
 
     public static Sequence createSequence(String text) {
-        List<String> symbolsList = text.chars().mapToObj(symbol ->  LIT + (char) symbol).collect(Collectors.toList());
+        List<String> symbolsList = text.chars().mapToObj(symbol -> LIT + (char) symbol).collect(Collectors.toList());
         return new Sequence(symbolsList);
     }
 }

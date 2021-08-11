@@ -3,9 +3,8 @@ package protocol.androidtv;
 import protocol.Button;
 import protocol.IPlatformProtocol;
 import protocol.PlatformElement;
-import protocol.Selector;
 
-public class AndroidTvProtocolImpl implements IPlatformProtocol {
+public class AndroidTvProtocolImpl implements IPlatformProtocol<Object> {
 
 /*    public AndroidTvProtocolImpl() {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
@@ -36,7 +35,7 @@ public class AndroidTvProtocolImpl implements IPlatformProtocol {
     }
 
     @Override
-    public PlatformElement findElement(Selector selector) {
+    public PlatformElement findElement(Object selector) {
         return null;
     }
 }

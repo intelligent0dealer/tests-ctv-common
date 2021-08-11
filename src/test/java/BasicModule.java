@@ -1,11 +1,9 @@
 import com.google.inject.AbstractModule;
 import protocol.Configuration;
-import protocol.IPlatformProtocol;
 import protocol.Platform;
 
 import static java.lang.System.getProperty;
 import static java.util.Locale.ROOT;
-import static protocol.ProtocolFactory.createProtocol;
 
 public class BasicModule extends AbstractModule {
 
@@ -27,6 +25,5 @@ public class BasicModule extends AbstractModule {
                 .timeout(timeout)
                 .build();
         bind(Configuration.class).toInstance(configuration);
-        bind(IPlatformProtocol.class).toInstance(createProtocol(configuration));
     }
 }

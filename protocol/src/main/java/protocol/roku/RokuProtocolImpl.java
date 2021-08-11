@@ -2,18 +2,21 @@ package protocol.roku;
 
 import models.Element;
 import models.RokuButton;
-import protocol.*;
+import models.Selector;
+import protocol.Button;
+import protocol.Configuration;
+import protocol.IPlatformProtocol;
+import protocol.PlatformElement;
 import webdriver.RokuDriver;
 import webdriver.Utils;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static models.Selector.Builder;
-import static models.Selector.Data.*;
+import static models.RokuButton.*;
 import static models.Sequence.createSequence;
 
-public class RokuProtocolImpl implements IPlatformProtocol {
+public class RokuProtocolImpl implements IPlatformProtocol<Selector> {
 
     public static final String DEFAULT_CHANNEL_ID = "dev";
     private final RokuDriver driver;
@@ -51,25 +54,25 @@ public class RokuProtocolImpl implements IPlatformProtocol {
 
     @Override
     public PlatformElement findElement(Selector selector) {
-        return toPlatformElement(driver.findElement(toRokuSelector(selector)));
+        return toPlatformElement(driver.findElement(selector));
     }
 
     private RokuButton mapButton(Button button) {
         switch (button) {
             case UP:
-                return RokuButton.UP;
+                return UP;
             case RIGHT:
-                return RokuButton.RIGHT;
+                return RIGHT;
             case OK:
-                return RokuButton.OK;
+                return OK;
             case DOWN:
-                return RokuButton.DOWN;
+                return DOWN;
             case LEFT:
-                return RokuButton.LEFT;
+                return LEFT;
             case BACK:
-                return RokuButton.BACK;
+                return BACK;
             case REFRESH:
-                return RokuButton.REFRESH;
+                return REFRESH;
             default:
                 throw new IllegalArgumentException("Unknown button");
         }
@@ -88,30 +91,5 @@ public class RokuProtocolImpl implements IPlatformProtocol {
 
     private RokuButton[] toRokuButton(Button... button) {
         return Arrays.stream(button).map(this::mapButton).toArray(RokuButton[]::new);
-    }
-
-    public models.Selector toRokuSelector(Selector selector) {
-        Builder builder = new Builder();
-        if (selector.getText() != null && !selector.getText().isEmpty()) {
-            builder.addElementData(text(selector.getText()));
-        }
-        if (selector.getTag() != null && !selector.getTag().isEmpty()) {
-            builder.addElementData(tag(selector.getTag()));
-        }
-        if (selector.getAttributes().size() > 0) {
-            selector.getAttributes().forEach((name, value) -> builder.addElementData(attr(name, value)));
-        }
-        if (selector.getParent() != null) {
-            if (selector.getParent().getText() != null && !selector.getParent().getText().isEmpty()) {
-                builder.addParentData(text(selector.getParent().getText()));
-            }
-            if (selector.getParent().getAttributes().size() > 0) {
-                selector.getParent().getAttributes().forEach((name, value) -> builder.addParentData(attr(name, value)));
-            }
-            if (selector.getParent().getTag() != null && !selector.getParent().getTag().isEmpty()) {
-                builder.addParentData(tag(selector.getParent().getTag()));
-            }
-        }
-        return builder.build();
     }
 }

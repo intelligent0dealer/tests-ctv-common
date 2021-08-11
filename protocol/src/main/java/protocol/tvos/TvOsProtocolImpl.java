@@ -3,9 +3,8 @@ package protocol.tvos;
 import protocol.Button;
 import protocol.IPlatformProtocol;
 import protocol.PlatformElement;
-import protocol.Selector;
 
-public class TvOsProtocolImpl implements IPlatformProtocol {
+public class TvOsProtocolImpl implements IPlatformProtocol<Object> {
 
     @Override
     public void closeSession() {
@@ -27,7 +26,7 @@ public class TvOsProtocolImpl implements IPlatformProtocol {
     }
 
     @Override
-    public PlatformElement findElement(Selector selector) {
+    public PlatformElement findElement(Object selector) {
         return null;
     }
 }

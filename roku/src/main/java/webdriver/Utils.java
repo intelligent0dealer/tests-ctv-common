@@ -31,6 +31,7 @@ public class Utils {
         }
         return error;
     }
+
     public static boolean filterAttr(Element.Attr attr, String key) {
         if (attr.getName() != null && attr.getName().getLocal() != null) {
             return attr.getName().getLocal().equals(key);

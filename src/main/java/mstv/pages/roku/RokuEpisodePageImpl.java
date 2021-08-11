@@ -1,16 +1,14 @@
 package mstv.pages.roku;
 
+import models.Selector;
 import mstv.pages.base.IEpisodePage;
-import protocol.Configuration;
 import protocol.IPlatformProtocol;
 
 public class RokuEpisodePageImpl implements IEpisodePage {
 
-    private final Configuration configuration;
-    private final IPlatformProtocol protocol;
+    private final IPlatformProtocol<Selector> protocol;
 
-    public RokuEpisodePageImpl(Configuration configuration, IPlatformProtocol protocol) {
-        this.configuration = configuration;
+    public RokuEpisodePageImpl(IPlatformProtocol<Selector> protocol) {
         this.protocol = protocol;
     }
 }

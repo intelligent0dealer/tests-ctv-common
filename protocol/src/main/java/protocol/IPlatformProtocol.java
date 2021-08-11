@@ -1,6 +1,6 @@
 package protocol;
 
-public interface IPlatformProtocol {
+public interface IPlatformProtocol<T> {
 
     void closeSession();
 
@@ -10,5 +10,5 @@ public interface IPlatformProtocol {
 
     PlatformElement getActiveElement();
 
-    PlatformElement findElement(Selector selector);
+    PlatformElement findElement(T selector);
 }

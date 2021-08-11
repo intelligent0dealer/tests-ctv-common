@@ -1,13 +1,12 @@
 package mstv.pages.roku;
 
+import models.Selector;
 import mstv.pages.base.ILoginPage;
-import protocol.Configuration;
 import protocol.IPlatformProtocol;
-import protocol.Selector;
 
+import static models.Selector.Data.attr;
+import static models.Selector.Data.tag;
 import static protocol.Button.*;
-import static protocol.By.attr;
-import static protocol.By.tag;
 
 public class RokuLoginPageImpl implements ILoginPage {
 
@@ -15,13 +14,14 @@ public class RokuLoginPageImpl implements ILoginPage {
     private static final String PASSWORD_BUTTON_ID = "password_button";
     private static final String SUBMIT_BUTTON_ID = "login_button";
     private static final String RESET_PASSWORD_BUTTON_ID = "reset_password_button";
-    private final Configuration configuration;
-    private final IPlatformProtocol protocol;
-    private final Selector parent = tag("MsTvButton").addAttribute("extends", "MsTvScreen");
-    private final Selector selector = attr("focused", "true").setParent(parent);
+    private final IPlatformProtocol<models.Selector> protocol;
+    private final Selector selector = new Selector.Builder()
+            .addElementData(attr("focused", "true"))
+            .addParentData(attr("extends", "MsTvScreen"))
+            .addParentData(tag("MsTvButton"))
+            .build();
 
-    public RokuLoginPageImpl(Configuration configuration, IPlatformProtocol protocol) {
-        this.configuration = configuration;
+    public RokuLoginPageImpl(IPlatformProtocol<Selector> protocol) {
         this.protocol = protocol;
     }
 
