@@ -39,7 +39,7 @@ public class RokuHomePageImpl implements IHomePage {
         try {
             return protocol.findElement(loginContainerSelector).isVisible();
         } catch (NoSuchElementException exception) {
-            return false;
+            return true;
         }
     }
 

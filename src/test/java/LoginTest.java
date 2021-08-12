@@ -1,7 +1,6 @@
 import data.User;
 import models.Selector;
 import mstv.pages.base.IHomePage;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -13,6 +12,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import static mstv.pages.roku.RokuHomePageImpl.openHomePage;
+import static org.testng.Assert.assertFalse;
 
 public class LoginTest extends AbstractTest {
 
@@ -29,12 +29,12 @@ public class LoginTest extends AbstractTest {
     }
 
     @Test(dataProvider = "provideUsers")
-    void test(User user) {
+    void shouldLoginSuccessfully(User user) {
         IHomePage homePage = openHomePage(protocol).openLoginPage()
                 .typeEmail(user.getEmail())
                 .typePassword(user.getPassword())
                 .submit();
-        Assert.assertFalse(homePage.isLoginButtonsVisible());
+        assertFalse(homePage.isLoginButtonsVisible());
     }
 
     @AfterClass
