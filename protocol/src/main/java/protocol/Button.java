@@ -7,5 +7,7 @@ public enum Button {
     DOWN,
     LEFT,
     BACK,
-    REFRESH
+    REFRESH,
+    FAST_FORWARD,
+    REWIND
 }

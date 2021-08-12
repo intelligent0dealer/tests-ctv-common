@@ -5,6 +5,8 @@ public class PlatformElement {
     private String id;
     private String text;
     private boolean isVisible;
+    private int focusedItemIndex;
+    private boolean isFocused;
 
     public String getId() {
         return id;
@@ -28,5 +30,21 @@ public class PlatformElement {
 
     public void setVisible(boolean visible) {
         isVisible = visible;
+    }
+
+    public int getFocusedItemIndex() {
+        return focusedItemIndex;
+    }
+
+    public void setFocusedItemIndex(int focusedItemIndex) {
+        this.focusedItemIndex = focusedItemIndex;
+    }
+
+    public boolean isFocused() {
+        return isFocused;
+    }
+
+    public void setFocused(boolean focused) {
+        isFocused = focused;
     }
 }

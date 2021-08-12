@@ -1,10 +1,7 @@
 import data.User;
 import models.Selector;
-import mstv.pages.base.IHomePage;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import mstv.pages.roku.RokuHomePageImpl;
+import org.testng.annotations.*;
 import protocol.IPlatformProtocol;
 import protocol.roku.RokuProtocolImpl;
 
@@ -17,6 +14,7 @@ import static org.testng.Assert.assertFalse;
 public class LoginTest extends AbstractTest {
 
     private IPlatformProtocol<Selector> protocol;
+    private RokuHomePageImpl homePage;
 
     @DataProvider
     private Iterator<Object[]> provideUsers() {
@@ -26,15 +24,21 @@ public class LoginTest extends AbstractTest {
     @BeforeClass
     void beforeClass() {
         protocol = new RokuProtocolImpl(getConfiguration());
+        homePage = openHomePage(protocol);
     }
 
     @Test(dataProvider = "provideUsers")
     void shouldLoginSuccessfully(User user) {
-        IHomePage homePage = openHomePage(protocol).openLoginPage()
+        homePage.openLoginPage()
                 .typeEmail(user.getEmail())
                 .typePassword(user.getPassword())
                 .submit();
         assertFalse(homePage.isLoginButtonsVisible());
+    }
+
+    @AfterMethod
+    void afterMethod() {
+        homePage.openSettingsPage().signOut();
     }
 
     @AfterClass

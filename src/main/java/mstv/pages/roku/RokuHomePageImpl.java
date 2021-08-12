@@ -10,11 +10,10 @@ import protocol.IPlatformProtocol;
 import static models.Selector.Data.attr;
 import static protocol.Button.*;
 
-public class RokuHomePageImpl implements IHomePage {
+public class RokuHomePageImpl extends RokuMenuPage implements IHomePage {
 
     private static final String CAROUSEL_ID = "vertical_scroll_group";
     private static final String JOIN_NOW_BUTTON_ID = "join";
-    private final IPlatformProtocol<Selector> protocol;
     private final Selector buttonsSelector = new Selector.Builder()
             .addElementData(attr("focused", "true"))
             .addParentData(attr("name", "home_screen"))
@@ -27,10 +26,10 @@ public class RokuHomePageImpl implements IHomePage {
             .build();
 
     public RokuHomePageImpl(IPlatformProtocol<Selector> protocol) {
-        this.protocol = protocol;
+        super(protocol);
     }
 
-    public static IHomePage openHomePage(IPlatformProtocol<Selector> protocol) {
+    public static RokuHomePageImpl openHomePage(IPlatformProtocol<Selector> protocol) {
         return new RokuHomePageImpl(protocol);
     }
 

@@ -9,14 +9,13 @@ import static models.Selector.Data.attr;
 import static models.Selector.Data.tag;
 import static protocol.Button.*;
 
-public class RokuLoginPageImpl implements ILoginPage {
+public class RokuLoginPageImpl extends RokuMenuPage implements ILoginPage {
 
     private static final String EMAIL_BUTTON_ID = "email_button";
     private static final String PASSWORD_BUTTON_ID = "password_button";
     private static final String SUBMIT_BUTTON_ID = "login_button";
     private static final String RESET_PASSWORD_BUTTON_ID = "reset_password_button";
     private final IHomePage homePage;
-    private final IPlatformProtocol<models.Selector> protocol;
     private final Selector selector = new Selector.Builder()
             .addElementData(attr("focused", "true"))
             .addParentData(attr("extends", "MsTvScreen"))
@@ -24,8 +23,8 @@ public class RokuLoginPageImpl implements ILoginPage {
             .build();
 
     public RokuLoginPageImpl(IHomePage homePage, IPlatformProtocol<Selector> protocol) {
+        super(protocol);
         this.homePage = homePage;
-        this.protocol = protocol;
     }
 
     @Override

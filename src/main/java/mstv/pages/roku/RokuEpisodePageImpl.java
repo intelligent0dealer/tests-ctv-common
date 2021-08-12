@@ -4,11 +4,9 @@ import models.Selector;
 import mstv.pages.base.IEpisodePage;
 import protocol.IPlatformProtocol;
 
-public class RokuEpisodePageImpl implements IEpisodePage {
-
-    private final IPlatformProtocol<Selector> protocol;
+public class RokuEpisodePageImpl extends RokuMenuPage implements IEpisodePage {
 
     public RokuEpisodePageImpl(IPlatformProtocol<Selector> protocol) {
-        this.protocol = protocol;
+        super(protocol);
     }
 }

@@ -73,6 +73,10 @@ public class RokuProtocolImpl implements IPlatformProtocol<Selector> {
                 return BACK;
             case REFRESH:
                 return REFRESH;
+            case FAST_FORWARD:
+                return FAST_FORWARD;
+            case REWIND:
+                return REWIND;
             default:
                 throw new IllegalArgumentException("Unknown button");
         }
@@ -81,9 +85,13 @@ public class RokuProtocolImpl implements IPlatformProtocol<Selector> {
     private PlatformElement toPlatformElement(Element element) {
         PlatformElement platformElement = new PlatformElement();
         String name = readAttr(element.getAttrs().stream(), "name", "");
-        String visible = readAttr(element.getAttrs().stream(), "visible", "true");
+        String isVisible = readAttr(element.getAttrs().stream(), "visible", "true");
+        String focusedItemIndex = readAttr(element.getAttrs().stream(), "focusItem", "-1");
+        String isFocused = readAttr(element.getAttrs().stream(), "focused", "false");
         platformElement.setId(name);
-        platformElement.setVisible(Boolean.parseBoolean(visible));
+        platformElement.setVisible(Boolean.parseBoolean(isVisible));
+        platformElement.setFocusedItemIndex(Integer.parseInt(focusedItemIndex));
+        platformElement.setFocused(Boolean.parseBoolean(isFocused));
         return platformElement;
     }
 
