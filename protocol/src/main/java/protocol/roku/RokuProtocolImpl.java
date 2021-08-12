@@ -80,16 +80,21 @@ public class RokuProtocolImpl implements IPlatformProtocol<Selector> {
 
     private PlatformElement toPlatformElement(Element element) {
         PlatformElement platformElement = new PlatformElement();
-        Stream<Element.Attr> stream = element.getAttrs().stream();
-        String name = stream.filter(attr -> Utils.filterAttr(attr, "name"))
-                .map(Element.Attr::getValue)
-                .findFirst()
-                .orElse("");
+        String name = readAttr(element.getAttrs().stream(), "name", "");
+        String visible = readAttr(element.getAttrs().stream(), "visible", "true");
         platformElement.setId(name);
+        platformElement.setVisible(Boolean.parseBoolean(visible));
         return platformElement;
     }
 
     private RokuButton[] toRokuButton(Button... button) {
         return Arrays.stream(button).map(this::mapButton).toArray(RokuButton[]::new);
+    }
+
+    private String readAttr(Stream<Element.Attr> stream, String key, String defaultValue) {
+        return stream.filter(attr -> Utils.filterAttr(attr, key))
+                .map(Element.Attr::getValue)
+                .findFirst()
+                .orElse(defaultValue);
     }
 }

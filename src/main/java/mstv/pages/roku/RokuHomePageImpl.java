@@ -1,5 +1,6 @@
 package mstv.pages.roku;
 
+import exception.NoSuchElementException;
 import models.Selector;
 import mstv.pages.base.IEpisodePage;
 import mstv.pages.base.IHomePage;
@@ -14,10 +15,15 @@ public class RokuHomePageImpl implements IHomePage {
     private static final String CAROUSEL_ID = "vertical_scroll_group";
     private static final String JOIN_NOW_BUTTON_ID = "join";
     private final IPlatformProtocol<Selector> protocol;
-    private final Selector selector = new Selector.Builder()
+    private final Selector buttonsSelector = new Selector.Builder()
             .addElementData(attr("focused", "true"))
             .addParentData(attr("name", "home_screen"))
             .addParentData(attr("extends", "Group"))
+            .build();
+    private final Selector loginContainerSelector = new Selector.Builder()
+            .addElementData(attr("name", "login_container"))
+            .addElementData(attr("visible", "false"))
+            .addParentData(attr("name", "home_screen"))
             .build();
 
     public RokuHomePageImpl(IPlatformProtocol<Selector> protocol) {
@@ -29,6 +35,15 @@ public class RokuHomePageImpl implements IHomePage {
     }
 
     @Override
+    public boolean isLoginButtonsVisible() {
+        try {
+            return protocol.findElement(loginContainerSelector).isVisible();
+        } catch (NoSuchElementException exception) {
+            return false;
+        }
+    }
+
+    @Override
     public IEpisodePage openEpisodePage() {
         //do something here
         return new RokuEpisodePageImpl(protocol);
@@ -36,11 +51,11 @@ public class RokuHomePageImpl implements IHomePage {
 
     @Override
     public ILoginPage openLoginPage() {
-        String activeElementID = protocol.findElement(selector).getId();
+        String activeElementID = protocol.findElement(buttonsSelector).getId();
         if (activeElementID.equals(CAROUSEL_ID)) {
             do {
                 protocol.pressButton(UP);
-                activeElementID = protocol.findElement(selector).getId();
+                activeElementID = protocol.findElement(buttonsSelector).getId();
             }
             while (activeElementID.equals(CAROUSEL_ID));
         }
@@ -48,6 +63,6 @@ public class RokuHomePageImpl implements IHomePage {
             protocol.pressButton(RIGHT);
         }
         protocol.pressButton(OK);
-        return new RokuLoginPageImpl(protocol);
+        return new RokuLoginPageImpl(this, protocol);
     }
 }

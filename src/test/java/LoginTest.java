@@ -1,5 +1,7 @@
 import data.User;
 import models.Selector;
+import mstv.pages.base.IHomePage;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -18,7 +20,7 @@ public class LoginTest extends AbstractTest {
 
     @DataProvider
     private Iterator<Object[]> provideUsers() {
-        return Collections.singletonList(new Object[]{new User("log", "pass")}).iterator();
+        return Collections.singletonList(new Object[]{new User("efim.filippov@motorsport.com", "dfg43jh7")}).iterator();
     }
 
     @BeforeClass
@@ -28,10 +30,11 @@ public class LoginTest extends AbstractTest {
 
     @Test(dataProvider = "provideUsers")
     void test(User user) {
-        openHomePage(protocol).openLoginPage()
+        IHomePage homePage = openHomePage(protocol).openLoginPage()
                 .typeEmail(user.getEmail())
                 .typePassword(user.getPassword())
                 .submit();
+        Assert.assertFalse(homePage.isLoginButtonsVisible());
     }
 
     @AfterClass

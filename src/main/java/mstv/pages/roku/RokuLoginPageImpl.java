@@ -1,6 +1,7 @@
 package mstv.pages.roku;
 
 import models.Selector;
+import mstv.pages.base.IHomePage;
 import mstv.pages.base.ILoginPage;
 import protocol.IPlatformProtocol;
 
@@ -14,6 +15,7 @@ public class RokuLoginPageImpl implements ILoginPage {
     private static final String PASSWORD_BUTTON_ID = "password_button";
     private static final String SUBMIT_BUTTON_ID = "login_button";
     private static final String RESET_PASSWORD_BUTTON_ID = "reset_password_button";
+    private final IHomePage homePage;
     private final IPlatformProtocol<models.Selector> protocol;
     private final Selector selector = new Selector.Builder()
             .addElementData(attr("focused", "true"))
@@ -21,7 +23,8 @@ public class RokuLoginPageImpl implements ILoginPage {
             .addParentData(tag("MsTvButton"))
             .build();
 
-    public RokuLoginPageImpl(IPlatformProtocol<Selector> protocol) {
+    public RokuLoginPageImpl(IHomePage homePage, IPlatformProtocol<Selector> protocol) {
+        this.homePage = homePage;
         this.protocol = protocol;
     }
 
@@ -60,7 +63,7 @@ public class RokuLoginPageImpl implements ILoginPage {
     }
 
     @Override
-    public void submit() {
+    public IHomePage submit() {
         String activeElementID = protocol.findElement(selector).getId();
         if (activeElementID.equals(EMAIL_BUTTON_ID) || activeElementID.equals(PASSWORD_BUTTON_ID)) {
             do {
@@ -74,5 +77,6 @@ public class RokuLoginPageImpl implements ILoginPage {
             }
         }
         protocol.pressButton(OK);
+        return homePage;
     }
 }

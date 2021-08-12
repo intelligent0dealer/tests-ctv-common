@@ -26,6 +26,7 @@ import static webdriver.Utils.parseError;
 
 public class RokuDriver {
 
+    private static final int READ_TIMEOUT_MILLIS = 60 * 1000;
     private final Retrofit retrofit;
     private final WebDriver driver;
     private final String sessionId;
@@ -103,7 +104,10 @@ public class RokuDriver {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         HttpLoggingInterceptor.Level level = isLogEnabled ? BODY : NONE;
         interceptor.setLevel(level);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(interceptor)
+                .readTimeout(READ_TIMEOUT_MILLIS, MILLISECONDS)
+                .build();
         return new Retrofit.Builder()
                 .client(client)
                 .baseUrl(driverURL)

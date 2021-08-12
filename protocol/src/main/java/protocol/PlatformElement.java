@@ -4,6 +4,7 @@ public class PlatformElement {
 
     private String id;
     private String text;
+    private boolean isVisible;
 
     public String getId() {
         return id;
@@ -19,5 +20,13 @@ public class PlatformElement {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }

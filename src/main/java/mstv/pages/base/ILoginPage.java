@@ -6,5 +6,5 @@ public interface ILoginPage {
 
     ILoginPage typePassword(String password);
 
-    void submit();
+    IHomePage submit();
 }
