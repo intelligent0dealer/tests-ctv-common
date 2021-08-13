@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,9 @@ public class Sequence {
     }
 
     public static Sequence createSequence(String text) {
+        if (text == null || text.isEmpty()) {
+            return new Sequence(Collections.singletonList(LIT));
+        }
         List<String> symbolsList = text.chars()
                 .mapToObj(symbol -> {
                     try {

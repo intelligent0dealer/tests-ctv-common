@@ -8,6 +8,16 @@ public class PlatformElement {
     private int focusedItemIndex;
     private boolean isFocused;
 
+    public int getChildCount() {
+        return childCount;
+    }
+
+    public void setChildCount(int childCount) {
+        this.childCount = childCount;
+    }
+
+    private int childCount;
+
     public String getId() {
         return id;
     }
