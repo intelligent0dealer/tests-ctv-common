@@ -20,6 +20,11 @@ public class AndroidTvProtocolImpl implements IPlatformProtocol<Object> {
     }
 
     @Override
+    public void openChannel(String channelID) {
+
+    }
+
+    @Override
     public void pressButton(Button... button) {
 
     }

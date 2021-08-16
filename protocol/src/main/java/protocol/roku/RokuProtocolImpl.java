@@ -18,7 +18,6 @@ import static models.Sequence.createSequence;
 
 public class RokuProtocolImpl implements IPlatformProtocol<Selector> {
 
-    public static final String DEFAULT_CHANNEL_ID = "dev";
     private final RokuDriver driver;
 
     public RokuProtocolImpl(Configuration configuration) {
@@ -29,12 +28,16 @@ public class RokuProtocolImpl implements IPlatformProtocol<Selector> {
                 configuration.getDelay(),
                 configuration.isLogEnabled()
         );
-        driver.openChannel(DEFAULT_CHANNEL_ID);
     }
 
     @Override
     public void closeSession() {
         driver.closeSession();
+    }
+
+    @Override
+    public void openChannel(String channelID) {
+        driver.openChannel(channelID);
     }
 
     @Override
