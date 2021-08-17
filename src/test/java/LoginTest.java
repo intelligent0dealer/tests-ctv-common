@@ -44,10 +44,10 @@ public class LoginTest extends AbstractTest {
 
     @Test(dataProvider = "providePositiveData")
     void shouldLoginSuccessfully(User user) {
-        homePage.openLoginPage()
-                .typeEmail(user.getEmail())
-                .typePassword(user.getPassword())
-                .submit();
+        ILoginPage loginPage = homePage.openLoginPage();
+        loginPage.typeEmail(user.getEmail());
+        loginPage.typePassword(user.getPassword());
+        loginPage.submit();
         assertFalse(homePage.isLoginButtonsVisible());
     }
 

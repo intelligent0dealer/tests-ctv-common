@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface IBaseLoginPage {
 
-    ILoginPage typeEmail(String email);
+    void typeEmail(String email);
 
-    ILoginPage typePassword(String password);
+    void typePassword(String password);
 
     void submit();
 

@@ -1,6 +1,7 @@
 package mstv.pages.roku.auth;
 
 import models.Selector;
+import mstv.pages.base.IBaseLoginPage;
 import mstv.pages.base.ILoginPage;
 import protocol.IPlatformProtocol;
 import protocol.PlatformElement;
@@ -33,7 +34,7 @@ public class BaseRokuAuthPage implements ILoginPage {
     }
 
     @Override
-    public ILoginPage typeEmail(String email) {
+    public void typeEmail(String email) {
         String activeElementID = protocol.findElement(buttonSelector).getId();
         if (!activeElementID.equals(EMAIL_BUTTON_ID)) {
             do {
@@ -45,11 +46,10 @@ public class BaseRokuAuthPage implements ILoginPage {
         protocol.pressButton(OK);
         protocol.sendKeys(email);
         protocol.pressButton(BACK);
-        return this;
     }
 
     @Override
-    public ILoginPage typePassword(String password) {
+    public void typePassword(String password) {
         String activeElementID = protocol.findElement(buttonSelector).getId();
         if (activeElementID.equals(EMAIL_BUTTON_ID)) {
             protocol.pressButton(DOWN);
@@ -63,7 +63,6 @@ public class BaseRokuAuthPage implements ILoginPage {
         protocol.pressButton(OK);
         protocol.sendKeys(password);
         protocol.pressButton(BACK);
-        return this;
     }
 
     @Override
