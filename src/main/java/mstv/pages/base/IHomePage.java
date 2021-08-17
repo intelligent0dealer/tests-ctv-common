@@ -7,4 +7,6 @@ public interface IHomePage {
     IEpisodePage openEpisodePage();
 
     ILoginPage openLoginPage();
+
+    IRegisterPage openRegisterPage();
 }

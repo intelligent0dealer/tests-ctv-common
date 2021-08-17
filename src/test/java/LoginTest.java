@@ -1,18 +1,13 @@
 import data.User;
-import models.Selector;
 import mstv.pages.base.ILoginPage;
-import mstv.pages.roku.RokuHomePageImpl;
-import org.testng.annotations.*;
-import protocol.IPlatformProtocol;
-import protocol.roku.RokuProtocolImpl;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static mstv.pages.roku.RokuHomePageImpl.openHomePage;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertFalse;
 
@@ -29,8 +24,6 @@ public class LoginTest extends AbstractTest {
     private final static String INVALID_PASS = "invalid";
     private final static String EMPTY_EMAIL = "";
     private final static String EMPTY_PASS = "";
-    private IPlatformProtocol<Selector> protocol;
-    private RokuHomePageImpl homePage;
 
     @DataProvider
     private Iterator<Object[]> providePositiveData() {
@@ -48,15 +41,6 @@ public class LoginTest extends AbstractTest {
         };
     }
 
-    @BeforeClass
-    void beforeClass() {
-        protocol = new RokuProtocolImpl(getConfiguration());
-    }
-
-    @BeforeMethod
-    void beforeMethod() {
-        homePage = openHomePage(protocol);
-    }
 
     @Test(dataProvider = "providePositiveData")
     void shouldLoginSuccessfully(User user) {
@@ -78,21 +62,5 @@ public class LoginTest extends AbstractTest {
         }
         loginPage.submit();
         assertThat(loginPage.getErrorMessages()).containsExactlyElementsOf(errorMessages);
-    }
-
-    @AfterMethod
-    void afterMethod(Method method) {
-        if (method.getName().equals("shouldLoginSuccessfully")) {
-            homePage.openSettingsPage().signOut();
-        }
-    }
-
-    @AfterClass
-    void afterClass() {
-        if (protocol != null) {
-            protocol.closeSession();
-            protocol = null;
-        }
-        homePage = null;
     }
 }

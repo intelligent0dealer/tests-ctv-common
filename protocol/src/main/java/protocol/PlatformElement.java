@@ -7,6 +7,8 @@ public class PlatformElement {
     private boolean isVisible;
     private int focusedItemIndex;
     private boolean isFocused;
+    private String uri;
+    private int childCount;
 
     public int getChildCount() {
         return childCount;
@@ -15,8 +17,6 @@ public class PlatformElement {
     public void setChildCount(int childCount) {
         this.childCount = childCount;
     }
-
-    private int childCount;
 
     public String getId() {
         return id;
@@ -56,5 +56,13 @@ public class PlatformElement {
 
     public void setFocused(boolean focused) {
         isFocused = focused;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 }

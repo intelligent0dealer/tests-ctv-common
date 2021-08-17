@@ -5,6 +5,9 @@ import models.Selector;
 import mstv.pages.base.IEpisodePage;
 import mstv.pages.base.IHomePage;
 import mstv.pages.base.ILoginPage;
+import mstv.pages.base.IRegisterPage;
+import mstv.pages.roku.auth.RokuLoginPageImpl;
+import mstv.pages.roku.auth.RokuRegisterPageImpl;
 import protocol.IPlatformProtocol;
 
 import static models.Selector.Data.attr;
@@ -15,6 +18,7 @@ public class RokuHomePageImpl extends RokuMenuPage implements IHomePage {
     public static final String DEFAULT_CHANNEL_ID = "dev";
     private static final String CAROUSEL_ID = "vertical_scroll_group";
     private static final String JOIN_NOW_BUTTON_ID = "join";
+    private static final String SIGN_IN_BUTTON_ID = "sign_in";
     private final Selector buttonsSelector = new Selector.Builder()
             .addElementData(attr("focused", "true"))
             .addParentData(attr("name", "home_screen"))
@@ -66,5 +70,22 @@ public class RokuHomePageImpl extends RokuMenuPage implements IHomePage {
         }
         protocol.pressButton(OK);
         return new RokuLoginPageImpl(protocol);
+    }
+
+    @Override
+    public IRegisterPage openRegisterPage() {
+        String activeElementID = protocol.findElement(buttonsSelector).getId();
+        if (activeElementID.equals(CAROUSEL_ID)) {
+            do {
+                protocol.pressButton(UP);
+                activeElementID = protocol.findElement(buttonsSelector).getId();
+            }
+            while (activeElementID.equals(CAROUSEL_ID));
+        }
+        if (activeElementID.equals(SIGN_IN_BUTTON_ID)) {
+            protocol.pressButton(LEFT);
+        }
+        protocol.pressButton(OK);
+        return new RokuRegisterPageImpl(protocol);
     }
 }

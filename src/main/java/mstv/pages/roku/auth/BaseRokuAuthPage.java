@@ -1,4 +1,4 @@
-package mstv.pages.roku;
+package mstv.pages.roku.auth;
 
 import models.Selector;
 import mstv.pages.base.ILoginPage;
@@ -12,24 +12,23 @@ import static models.Selector.Data.attr;
 import static models.Selector.Data.tag;
 import static protocol.Button.*;
 
-public class RokuLoginPageImpl extends RokuMenuPage implements ILoginPage {
+public class BaseRokuAuthPage implements ILoginPage {
 
-    private static final String EMAIL_BUTTON_ID = "email_button";
-    private static final String PASSWORD_BUTTON_ID = "password_button";
-    private static final String SUBMIT_BUTTON_ID = "login_button";
-    private static final String RESET_PASSWORD_BUTTON_ID = "reset_password_button";
-    private final IPlatformProtocol<models.Selector> protocol;
-    private final Selector buttonSelector = new Selector.Builder()
+    protected static final String EMAIL_BUTTON_ID = "email_button";
+    protected static final String PASSWORD_BUTTON_ID = "password_button";
+    protected static final String SUBMIT_BUTTON_ID = "login_button";
+    protected static final String RESET_PASSWORD_BUTTON_ID = "reset_password_button";
+    protected final IPlatformProtocol<Selector> protocol;
+    protected final Selector buttonSelector = new Selector.Builder()
             .addElementData(attr("focused", "true"))
             .addParentData(attr("extends", "MsTvScreen"))
             .addParentData(tag("MsTvButton"))
             .build();
-    private final Selector bulletTextSelector = new Selector.Builder()
+    protected final Selector bulletTextSelector = new Selector.Builder()
             .addElementData(tag("BulletText"))
             .build();
 
-    public RokuLoginPageImpl(IPlatformProtocol<Selector> protocol) {
-        super(protocol);
+    public BaseRokuAuthPage(IPlatformProtocol<Selector> protocol) {
         this.protocol = protocol;
     }
 
@@ -83,7 +82,6 @@ public class RokuLoginPageImpl extends RokuMenuPage implements ILoginPage {
         }
         protocol.pressButton(OK);
     }
-
 
     @Override
     public List<String> getErrorMessages() {

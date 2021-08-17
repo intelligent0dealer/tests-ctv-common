@@ -93,12 +93,14 @@ public class RokuProtocolImpl implements IPlatformProtocol<Selector> {
         String isFocused = readAttr(element.getAttrs().stream(), "focused", "false");
         String text = readAttr(element.getAttrs().stream(), "text", "");
         String childCount = readAttr(element.getAttrs().stream(), "children", "0");
+        String uri = readAttr(element.getAttrs().stream(), "uri", "");
         platformElement.setId(name);
         platformElement.setVisible(Boolean.parseBoolean(isVisible));
         platformElement.setFocusedItemIndex(Integer.parseInt(focusedItemIndex));
         platformElement.setFocused(Boolean.parseBoolean(isFocused));
         platformElement.setChildCount(Integer.parseInt(childCount));
         platformElement.setText(text);
+        platformElement.setUri(uri);
         return platformElement;
     }
 
