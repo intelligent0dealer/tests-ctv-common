@@ -15,7 +15,6 @@ import static protocol.Button.*;
 
 public class RokuHomePageImpl extends RokuMenuPage implements IHomePage {
 
-    public static final String DEFAULT_CHANNEL_ID = "dev";
     private static final String CAROUSEL_ID = "vertical_scroll_group";
     private static final String JOIN_NOW_BUTTON_ID = "join";
     private static final String SIGN_IN_BUTTON_ID = "sign_in";
@@ -36,7 +35,7 @@ public class RokuHomePageImpl extends RokuMenuPage implements IHomePage {
     }
 
     public static RokuHomePageImpl openHomePage(IPlatformProtocol<Selector> protocol) {
-        protocol.openChannel(DEFAULT_CHANNEL_ID);
+        protocol.openChannel();
         return new RokuHomePageImpl(protocol);
     }
 

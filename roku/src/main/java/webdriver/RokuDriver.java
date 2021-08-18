@@ -29,14 +29,23 @@ public class RokuDriver {
     private static final int READ_TIMEOUT_MILLIS = 60 * 1000;
     private final Retrofit retrofit;
     private final WebDriver driver;
+    private final String channelID;
     private final String sessionId;
     private final ScheduledExecutorService executorService;
     private final long timeout;
     private final long delay;
 
-    public RokuDriver(String driverURL, String clientIpAddress, long timeout, long delay, boolean isLogEnabled) {
+    public RokuDriver(
+            String driverURL,
+            String clientIpAddress,
+            String channelID,
+            long timeout,
+            long delay,
+            boolean isLogEnabled
+    ) {
         retrofit = buildRetrofit(driverURL, isLogEnabled);
         driver = retrofit.create(WebDriver.class);
+        this.channelID = channelID;
         this.timeout = timeout;
         this.delay = delay;
         executorService = Executors.newSingleThreadScheduledExecutor();
@@ -84,7 +93,7 @@ public class RokuDriver {
         return delayedExecute(driver.getPlayerInfo(sessionId), "Unable to get player information").getValue();
     }
 
-    public void openChannel(String channelID) {
+    public void openChannel() {
         delayedExecute(driver.openChannel(sessionId, new ChannelID(channelID)),
                 String.format("Unable to open channel with ID %s", channelID));
     }

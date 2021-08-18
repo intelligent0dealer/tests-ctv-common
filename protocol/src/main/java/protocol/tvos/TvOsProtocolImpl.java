@@ -12,7 +12,7 @@ public class TvOsProtocolImpl implements IPlatformProtocol<Object> {
     }
 
     @Override
-    public void openChannel(String channelID) {
+    public void openChannel() {
 
     }
 

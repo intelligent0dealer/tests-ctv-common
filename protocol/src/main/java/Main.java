@@ -26,6 +26,7 @@ public class Main {
             driver = new RokuDriver(
                     configuration.getDriverUrl(),
                     configuration.getClientIpAddress(),
+                    "dev",
                     4000L,
                     250L,
                     configuration.isLogEnabled()

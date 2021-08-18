@@ -24,6 +24,7 @@ public class RokuProtocolImpl implements IPlatformProtocol<Selector> {
         driver = new RokuDriver(
                 configuration.getDriverUrl(),
                 configuration.getClientIpAddress(),
+                configuration.getChannelID(),
                 configuration.getTimeout(),
                 configuration.getDelay(),
                 configuration.isLogEnabled()
@@ -36,8 +37,8 @@ public class RokuProtocolImpl implements IPlatformProtocol<Selector> {
     }
 
     @Override
-    public void openChannel(String channelID) {
-        driver.openChannel(channelID);
+    public void openChannel() {
+        driver.openChannel();
     }
 
     @Override

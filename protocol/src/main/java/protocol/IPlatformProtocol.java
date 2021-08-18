@@ -4,7 +4,7 @@ public interface IPlatformProtocol<T> {
 
     void closeSession();
 
-    void openChannel(String channelID);
+    void openChannel();
 
     void pressButton(Button... button);
 

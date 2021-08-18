@@ -3,6 +3,7 @@ package protocol;
 public class Configuration {
 
     private String driverUrl;
+    private String channelID;
     private String clientIpAddress;
     private Platform platform;
     private long timeout;
@@ -10,6 +11,10 @@ public class Configuration {
     private boolean isLogEnabled;
 
     private Configuration() {
+    }
+
+    public String getChannelID() {
+        return channelID;
     }
 
     public String getClientIpAddress() {
@@ -42,6 +47,11 @@ public class Configuration {
 
         public Builder() {
             configuration = new Configuration();
+        }
+
+        public Builder channelID(String channelID) {
+            configuration.channelID = channelID;
+            return this;
         }
 
         public Builder clientIpAddress(String ipAddress) {
