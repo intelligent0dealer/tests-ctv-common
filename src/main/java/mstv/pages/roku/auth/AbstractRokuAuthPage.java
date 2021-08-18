@@ -2,7 +2,6 @@ package mstv.pages.roku.auth;
 
 import models.Selector;
 import mstv.pages.base.IBaseLoginPage;
-import mstv.pages.base.ILoginPage;
 import protocol.IPlatformProtocol;
 import protocol.PlatformElement;
 
@@ -13,7 +12,7 @@ import static models.Selector.Data.attr;
 import static models.Selector.Data.tag;
 import static protocol.Button.*;
 
-public class BaseRokuAuthPage implements ILoginPage {
+public abstract class AbstractRokuAuthPage implements IBaseLoginPage {
 
     protected static final String EMAIL_BUTTON_ID = "email_button";
     protected static final String PASSWORD_BUTTON_ID = "password_button";
@@ -29,7 +28,7 @@ public class BaseRokuAuthPage implements ILoginPage {
             .addElementData(tag("BulletText"))
             .build();
 
-    public BaseRokuAuthPage(IPlatformProtocol<Selector> protocol) {
+    public AbstractRokuAuthPage(IPlatformProtocol<Selector> protocol) {
         this.protocol = protocol;
     }
 
@@ -66,23 +65,6 @@ public class BaseRokuAuthPage implements ILoginPage {
     }
 
     @Override
-    public void submit() {
-        String activeElementID = protocol.findElement(buttonSelector).getId();
-        if (activeElementID.equals(EMAIL_BUTTON_ID) || activeElementID.equals(PASSWORD_BUTTON_ID)) {
-            do {
-                protocol.pressButton(DOWN);
-                activeElementID = protocol.findElement(buttonSelector).getId();
-            } while (!activeElementID.equals(SUBMIT_BUTTON_ID));
-        } else {
-            while (!activeElementID.equals(SUBMIT_BUTTON_ID)) {
-                protocol.pressButton(UP);
-                activeElementID = protocol.findElement(buttonSelector).getId();
-            }
-        }
-        protocol.pressButton(OK);
-    }
-
-    @Override
     public List<String> getErrorMessages() {
         ArrayList<String> messages = new ArrayList<>();
         int childCount = protocol.findElement(bulletTextSelector).getChildCount();
@@ -96,5 +78,21 @@ public class BaseRokuAuthPage implements ILoginPage {
             messages.add(element.getText());
         }
         return messages;
+    }
+
+    protected void pressNextButton() {
+        String activeElementID = protocol.findElement(buttonSelector).getId();
+        if (activeElementID.equals(EMAIL_BUTTON_ID) || activeElementID.equals(PASSWORD_BUTTON_ID)) {
+            do {
+                protocol.pressButton(DOWN);
+                activeElementID = protocol.findElement(buttonSelector).getId();
+            } while (!activeElementID.equals(SUBMIT_BUTTON_ID));
+        } else {
+            while (!activeElementID.equals(SUBMIT_BUTTON_ID)) {
+                protocol.pressButton(UP);
+                activeElementID = protocol.findElement(buttonSelector).getId();
+            }
+        }
+        protocol.pressButton(OK);
     }
 }

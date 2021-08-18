@@ -30,8 +30,12 @@ public abstract class AbstractTest {
 
     @AfterMethod
     void afterMethod(Method method) {
-        if (method.getName().equals("shouldLoginSuccessfully")) {
-            homePage.openSettingsPage().signOut();
+        switch (method.getName()) {
+            case "shouldLoginSuccessfully":
+            case "shouldRegisterSuccessfully": {
+                homePage.openSettingsPage().signOut();
+                break;
+            }
         }
     }
 

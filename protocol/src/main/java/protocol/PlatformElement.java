@@ -9,6 +9,7 @@ public class PlatformElement {
     private boolean isFocused;
     private String uri;
     private int childCount;
+    private int itemCount;
 
     public int getChildCount() {
         return childCount;
@@ -64,5 +65,13 @@ public class PlatformElement {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int count) {
+        this.itemCount = count;
     }
 }

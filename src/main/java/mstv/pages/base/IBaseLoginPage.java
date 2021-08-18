@@ -8,7 +8,5 @@ public interface IBaseLoginPage {
 
     void typePassword(String password);
 
-    void submit();
-
     List<String> getErrorMessages();
 }

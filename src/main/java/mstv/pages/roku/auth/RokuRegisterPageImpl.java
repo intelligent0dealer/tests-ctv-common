@@ -1,14 +1,16 @@
 package mstv.pages.roku.auth;
 
 import models.Selector;
+import mstv.pages.base.IEmailConfirmationPage;
 import mstv.pages.base.IRegisterPage;
+import mstv.pages.roku.RokuEmailConfirmationPage;
 import protocol.IPlatformProtocol;
 
 import static models.Selector.Data.attr;
 import static models.Selector.Data.tag;
 import static protocol.Button.*;
 
-public class RokuRegisterPageImpl extends BaseRokuAuthPage implements IRegisterPage {
+public class RokuRegisterPageImpl extends AbstractRokuAuthPage implements IRegisterPage {
 
     private final static String NEWSLETTER_NOTIFICATION_BUTTON_ID = "ok_by_email_button";
     private final static String IC_CHECKBOX_MARKED_OUTLINE_URI = "pkg:/images/ic_checkbox_marked_outline.png";
@@ -42,5 +44,11 @@ public class RokuRegisterPageImpl extends BaseRokuAuthPage implements IRegisterP
         if ((!isEnabled && IC_CHECKBOX_MARKED_OUTLINE_URI.equals(uri)) || (isEnabled && IC_CHECKBOX_BLANK_OUTLINE_URI.equals(uri))) {
             protocol.pressButton(OK);
         }
+    }
+
+    @Override
+    public IEmailConfirmationPage submit() {
+        pressNextButton();
+        return new RokuEmailConfirmationPage(protocol);
     }
 }

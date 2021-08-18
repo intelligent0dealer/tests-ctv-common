@@ -24,10 +24,6 @@ public class RokuMenuPage {
         this.protocol = protocol;
     }
 
-    int getFocusedMenuIndex() {
-        return protocol.findElement(menu).getFocusedItemIndex();
-    }
-
     public ISettingsPage openSettingsPage() {
         protocol.pressButton(BACK);
         protocol.findElement(menu);
@@ -36,5 +32,21 @@ public class RokuMenuPage {
             protocol.pressButton(DOWN);
         }
         return new RokuSettingsPageImpl(protocol);
+    }
+
+    private MenuItem getFocusedMenuIndex() {
+        int index = protocol.findElement(menu).getFocusedItemIndex();
+        return MenuItem.values()[index];
+    }
+
+    private enum MenuItem {
+        SEARCH,
+        HOME,
+        LIVE,
+        RACING_SERIES,
+        PROGRAMS,
+        CHANNELS,
+        MY_FEED,
+        SETTINGS
     }
 }

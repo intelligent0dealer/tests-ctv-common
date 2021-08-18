@@ -69,7 +69,7 @@ public class RokuHomePageImpl extends RokuMenuPage implements IHomePage {
             protocol.pressButton(RIGHT);
         }
         protocol.pressButton(OK);
-        return new RokuLoginPageImpl(protocol);
+        return new RokuLoginPageImpl(protocol, this);
     }
 
     @Override
